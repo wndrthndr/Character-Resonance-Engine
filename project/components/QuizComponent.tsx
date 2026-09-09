@@ -249,7 +249,7 @@ if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsW
   return image;
     }
 
-    const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\\/$/, "");
+    const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
     if (image.startsWith("/")) {
       return apiBase ? `${apiBase}${image}` : image;
     }
