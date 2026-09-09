@@ -24,7 +24,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
   const startQuiz = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/quiz/start`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quiz/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ franchise }),
