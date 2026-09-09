@@ -245,11 +245,11 @@ export function QuizComponent({ franchise }: { franchise: string }) {
   // accidentally request them from the Next.js frontend.
   const resolveImageUrl = (image?: string | null) => {
     if (!image) return null;
-    if (/^(https?:)?\\/\\//i.test(image) || image.startsWith("data:") || image.startsWith("blob:")) {
+    if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsWith("blob:")) {
       return image;
     }
 
-    const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\\/$/, "");
+    const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
     if (image.startsWith("/")) {
       return apiBase ? `${apiBase}${image}` : image;
     }
@@ -272,7 +272,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
     
   
 
-    const primary =
+    const resultPrimary =
       primaryMatch?.character?.geometry?.color ||
       result?.predicted_character?.color ||
       "#3b82f6";
