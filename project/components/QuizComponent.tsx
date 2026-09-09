@@ -57,7 +57,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/quiz/answer`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quiz/answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -240,7 +240,24 @@ export function QuizComponent({ franchise }: { franchise: string }) {
 
   const contrast = getContrast(primary);
 
-  if (result) {
+  // API image URLs may be absolute, root-relative, or relative paths.
+  // Resolve relative paths against the API origin so the browser doesn't
+  // accidentally request them from the Next.js frontend.
+  const resolveImageUrl = (image?: string | null) => {
+    if (!image) return null;
+    if (/^(https?:)?\\/\\//i.test(image) || image.startsWith("data:") || image.startsWith("blob:")) {
+      return image;
+    }
+
+    const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\\/$/, "");
+    if (image.startsWith("/")) {
+      return apiBase ? `${apiBase}${image}` : image;
+    }
+
+    return apiBase ? `${apiBase}/${image}` : image;
+  };
+
+ if (result) {
     const matches = result?.matches || [];
     const topMatch = matches?.[0];
     const primaryMatch = matches[0] || null;
