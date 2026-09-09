@@ -358,7 +358,7 @@ if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsW
 
     return (
       <div
-            className="relative mx-auto flex w-full max-w-[1000px] flex-col px-5 sm:px-8 lg:px-12"
+            className="relative flex w-full max-w-[1000px] flex-col px-5 sm:px-8 lg:px-12"
 
 >
         <style>{`
