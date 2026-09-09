@@ -19,8 +19,7 @@
 </p>
 
 <p align="center">
-
-**[Live Demo]([#](https://characte2r.vercel.app/))** · **[Architecture](#architecture)** · **[How-it-works](#how-it-works)** · **[Testing](#testing)**
+**[Live Demo](https://characte2r.vercel.app/)** · **[Architecture](#architecture)** · **[How-it-works](#how-it-works)** · **[Testing](#testing)**
 
 </p>
 
