@@ -1,326 +1,235 @@
-<!-- ═══════════════════════════════════════════════════════════════ -->
+<div align="center">
 
-<!--                     CHARACTER RESONANCE ENGINE                  -->
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:6D28D9,50:9333EA,100:EC4899&height=220&section=header&text=Character%20Resonance%20Engine&fontSize=46&fontColor=ffffff&fontAlignY=38&animation=fadeIn&desc=Which%20fictional%20character%20thinks%20the%20way%20you%20do%3F&descAlignY=58&descSize=18" alt="header banner"/>
 
-<!-- ═══════════════════════════════════════════════════════════════ -->
+<br/>
 
-<p align="center">
-  <img
-    src="https://capsule-render.vercel.app/api?type=waving&color=0:090909,45:171612,100:3b3932&height=190&section=header&text=CHARACTER%20RESONANCE%20ENGINE&fontSize=31&fontColor=e9e4d7&animation=fadeIn&fontAlignY=38"
-    width="100%"
-    alt="Character Resonance Engine"
-  />
-</p>
+<a href="https://characte2r.vercel.app/">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=22&duration=2600&pause=900&color=C084FC&center=true&vCenter=true&width=650&lines=Answers+aren't+scores.+They're+evidence.;12-dimensional+behavioral+profiling;Adaptive+questioning+%E2%80%94+the+quiz+learns+as+you+play;Not+%22you+are+Batman%22.+Why+you+are+Batman." alt="typing animation"/>
+</a>
 
-<p align="center">
-  <img
-    src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=14&duration=3200&pause=1000&color=AAA59B&center=true&vCenter=true&width=720&lines=Every+choice+leaves+a+trace.;Every+trace+forms+a+pattern.;Find+the+fictional+character+you+resonate+with."
-    alt="Every choice leaves a trace. Every trace forms a pattern."
-  />
-</p>
+<br/><br/>
 
-<p align="center">
-  <strong>What fictional character resonates with the way you think?</strong>
-</p>
+<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"/>
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+<img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
 
-<p align="center">
-  An adaptive behavioral profiling engine that turns your choices into a
-  dynamic personality vector and finds the fictional character whose
-  behavioral pattern matches yours.
-</p>
+<br/><br/>
 
-<br>
+<img src="https://img.shields.io/badge/self--ranking-100%25-brightgreen?style=flat-square"/>
+<img src="https://img.shields.io/badge/robustness-100%25%20(100%2F100)-brightgreen?style=flat-square"/>
+<img src="https://img.shields.io/badge/dimensions-12-blueviolet?style=flat-square"/>
+<img src="https://img.shields.io/badge/universes-4-orange?style=flat-square"/>
+<img src="https://img.shields.io/badge/license-MIT-informational?style=flat-square"/>
 
-<p align="center">
-  <a href="https://characte2r.vercel.app/">
-    <img src="https://img.shields.io/badge/%E2%96%B6%20LIVE%20DEMO-e9e4d7?style=for-the-badge&labelColor=11110f&color=3b3932" alt="Live Demo">
-  </a>
-  <a href="#architecture">
-    <img src="https://img.shields.io/badge/%E2%97%87%20ARCHITECTURE-d8d3c8?style=for-the-badge&labelColor=11110f&color=3b3932" alt="Architecture">
-  </a>
-  <a href="#how-it-works">
-    <img src="https://img.shields.io/badge/%E2%97%87%20HOW%20IT%20WORKS-d8d3c8?style=for-the-badge&labelColor=11110f&color=3b3932" alt="How it works">
-  </a>
-  <a href="#testing">
-    <img src="https://img.shields.io/badge/%E2%97%87%20TESTING-d8d3c8?style=for-the-badge&labelColor=11110f&color=3b3932" alt="Testing">
-  </a>
-</p>
+<br/><br/>
 
-<br>
+<a href="https://characte2r.vercel.app/"><b>🎮 Live Demo</b></a> ·
+<a href="#-architecture"><b>🏗 Architecture</b></a> ·
+<a href="#-how-it-works"><b>⚙ How it Works</b></a> ·
+<a href="#-testing--evaluation"><b>🧪 Testing</b></a> ·
+<a href="#-running-locally"><b>🚀 Run Locally</b></a>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/PYTHON-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/FASTAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/NEXT.JS-000000?style=flat-square&logo=next.js&logoColor=white" alt="Next.js">
-  <img src="https://img.shields.io/badge/TYPESCRIPT-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/REACT-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React">
-</p>
+</div>
 
-<br>
+<br/>
 
-<p align="center">
-  <sub>
-    ──────────────────────────────── ✦ ────────────────────────────────
-  </sub>
-</p>
+<img width="100%" src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif"/>
 
-<p align="center">
-  <em>
-    A behavioral matching system disguised as a character experience.
-  </em>
-</p>
-
-<p align="center">
-  <sub>MARVEL · DC · AVATAR: THE LAST AIRBENDER · KUNG FU PANDA</sub>
-</p>
-
-<p align="center">
-  <sub>
-    ──────────────────────────────── ✦ ────────────────────────────────
-  </sub>
-</p>
-
-◇ The Idea
+## 💡 The Idea
 
 Most personality quizzes work like this:
 
-Question → Answer → Score → Character
+> `Question → Answer → Score → Character`
 
-Character Resonance Engine takes a different approach.
+**Character Resonance Engine** treats every answer as **behavioral evidence** rather than a scoring point. That evidence progressively builds a multi-dimensional profile — while the system continuously decides which question will teach it the most, next.
 
-Your answers are treated as behavioral evidence.
+<div align="center">
 
-That evidence progressively builds a multi-dimensional profile, while the system continuously decides which question will provide the most useful information next.
+```
+   YOUR CHOICES
+        │
+        ▼
+  BEHAVIORAL EVIDENCE
+        │
+        ▼
+    12D PROFILE
+        │
+        ▼
+ ADAPTIVE QUESTIONING
+        │
+ ┌──────┼──────┐
+ ▼      ▼      ▼
+EXPLORE DISCOVER REFINE
+ │      │      │
+ └──────┼──────┘
+        ▼
+ CHARACTER RANKING
+        │
+        ▼
+ MATCH EXPLANATION
+```
 
-                 YOUR CHOICES
-                      │
-                      ▼
-              BEHAVIORAL EVIDENCE
-                      │
-                      ▼
-                12D PROFILE
-                      │
-                      ▼
-            ADAPTIVE QUESTIONING
-                      │
-             ┌────────┼────────┐
-             ▼        ▼        ▼
-        EXPLORATION DISCOVERY REFINEMENT
-             │        │        │
-             └────────┼────────┘
-                      ▼
-              CHARACTER RANKING
-                      │
-                      ▼
-               MATCH EXPLANATION
+</div>
 
-The result isn't just who you matched with.
+> The result isn't just **who** you matched with. It's **why**.
 
-It's why.
+<br/>
 
-✦ How It Works
+## ⚙ How It Works
 
-01 — Behavioral Modeling
+### 01 · Behavioral Modeling
 
-Every answer can contribute to multiple behavioral dimensions.
+Every answer can contribute to **multiple** behavioral dimensions at once — nothing is forced into a single bucket.
 
-The system currently models:
+<div align="center">
 
-ACTION
-ANALYTICAL
-EMPATHETIC
-JUSTICE_DRIVEN
-AMBITIOUS
-CREATIVE
-LOYAL
-DISCIPLINED
-HUMOROUS
-CURIOUS
-PRAGMATIC
-REBELLIOUS
+| Dimension | | Dimension |
+|:--|:--:|:--|
+| 🗡 `ACTION` | | 🧩 `ANALYTICAL` |
+| 💞 `EMPATHETIC` | | ⚖ `JUSTICE_DRIVEN` |
+| 🚀 `AMBITIOUS` | | 🎨 `CREATIVE` |
+| 🤝 `LOYAL` | | 🎯 `DISCIPLINED` |
+| 😂 `HUMOROUS` | | 🔍 `CURIOUS` |
+| 🛠 `PRAGMATIC` | | 🔥 `REBELLIOUS` |
 
-Instead of forcing an answer into a single category, behavioral evidence accumulates across the entire vector.
+</div>
 
-Example:
+**Example profile:**
 
-                    USER PROFILE
+```text
+ACTION            ████████████████░░  0.91
+LOYAL             ████████████████░░  0.93
+JUSTICE_DRIVEN    ███████████████░░░  0.84
+EMPATHETIC        ██████████████░░░░  0.78
+ANALYTICAL        █████████████░░░░░  0.67
+CREATIVE          ████████████░░░░░░  0.61
+```
 
-ACTION             ████████████████  0.91
-ANALYTICAL         ████████████      0.67
-EMPATHETIC         ██████████████    0.78
-JUSTICE_DRIVEN     ███████████████   0.84
-CREATIVE           ███████████       0.61
-LOYAL              ████████████████  0.93
-...
+<br/>
 
-This gives the system a richer representation than a single personality label.
+### 02 · Adaptive Questioning
 
-✦ Adaptive Questioning
+The quiz never walks a fixed script — the **next question is chosen live**, based on what the engine still needs to learn.
 
-The quiz does not simply walk through a fixed list of questions.
+<table align="center">
+<tr>
+<td width="33%" valign="top">
 
-The next question is selected according to what the system still needs to learn.
+**🔭 Exploration**
 
-Exploration
+Early questions cast a wide net across all 12 dimensions to build broad coverage fast.
 
-Early questions establish broad behavioral coverage.
+</td>
+<td width="33%" valign="top">
 
-"What kind of decision would you make?"
-            ↓
-Broad behavioral evidence
+**🔦 Discovery**
 
-Discovery
+Once evidence accumulates, the engine hunts for the question that best *separates* the leading candidates.
 
-Once enough evidence exists, the system looks for questions that distinguish between competing character profiles.
+</td>
+<td width="33%" valign="top">
 
-Candidate A ─────┐
-                  ├── Which question separates them?
-Candidate B ─────┘
+**🎯 Refinement**
 
-Refinement
+Final questions attack the last pocket of uncertainty between the top contenders.
 
-Later questions focus on unresolved differences between the strongest candidates.
+</td>
+</tr>
+</table>
 
-TOP CANDIDATES
-      ↓
-Remaining uncertainty
-      ↓
-Most useful question
-      ↓
-Sharper profile
+<div align="center">
 
-This creates a three-stage selection strategy:
+`EXPLORATION` → `DISCOVERY` → `REFINEMENT`
 
-EXPLORATION
-     ↓
-DISCOVERY
-     ↓
-REFINEMENT
+</div>
 
-✦ Character Matching
+<br/>
 
-Each character exists inside the same behavioral space as the user.
+### 03 · Character Matching
 
-The ranking engine combines multiple signals instead of relying on one similarity metric.
+Every character lives in the **same** 12D behavioral space as the user. Instead of one similarity metric, the ranking engine blends several signals:
 
-USER VECTOR
-     │
-     ├── Signature similarity
-     ├── Strong trait matching
-     ├── Profile similarity
-     ├── Cosine similarity
-     └── Contradiction penalty
-              │
-              ▼
-        FINAL RANKING
+<div align="center">
 
-Current ranking configuration:
+| Signal | Weight |
+|:--|:--:|
+| 🎯 Signature similarity | **55%** |
+| 💪 Strong trait matching | **20%** |
+| 📈 Profile similarity | **15%** |
+| 📐 Cosine similarity | **10%** |
+| ⚠ Contradiction penalty | *applied separately* |
 
-Signal
+</div>
 
-Weight
+<br/>
 
-Signature similarity
+### 04 · Match Explanation
 
-55%
+The engine doesn't stop at `You are Batman — 87%`. It shows the receipts.
 
-Strong trait matching
-
-20%
-
-Profile similarity
-
-15%
-
-Cosine similarity
-
-10%
-
-Contradiction penalty
-
-Applied separately
-
-The result is a ranked set of characters rather than a simple yes/no classification.
-
-✦ Match Explanation
-
-The engine doesn't stop at:
-
-You are Batman — 87%.
-
-It exposes the strongest signals behind the match.
-
+```text
 WHY THIS ONE
 
-ACTION             YOU 91%     BATMAN 92%
-ANALYTICAL         YOU 86%     BATMAN 100%
-LOYAL              YOU 94%     BATMAN 96%
-PRAGMATIC          YOU 90%     BATMAN 98%
+ACTION          YOU 91%   ██████████░  BATMAN 92%  ██████████░
+ANALYTICAL      YOU 86%   █████████░░  BATMAN 100% ███████████
+LOYAL           YOU 94%   ███████████  BATMAN 96%  ███████████
+PRAGMATIC       YOU 90%   █████████░░  BATMAN 98%  ███████████
+```
 
-The interface can then translate those values into human-readable explanations.
+The interface translates that side-by-side comparison into a plain-language explanation — the result feels **interpretable**, not arbitrary.
 
-The goal is to make the result feel interpretable rather than arbitrary.
+<br/>
 
-✦ Architecture
+## 🏗 Architecture
 
-┌──────────────────────────────────────────────────────────────┐
-│                         FRONTEND                             │
-│                                                              │
-│             Next.js + React + TypeScript                     │
-│                                                              │
-└──────────────────────────────┬───────────────────────────────┘
-                               │
-                               │ HTTP
-                               ▼
-┌──────────────────────────────────────────────────────────────┐
-│                         FASTAPI                              │
-│                                                              │
-│                    Quiz / API Layer                          │
-│                                                              │
-└──────────────────────────────┬───────────────────────────────┘
-                               │
-                               ▼
-┌──────────────────────────────────────────────────────────────┐
-│                       QUIZ SERVICE                            │
-│                                                              │
-│     Session state · responses · progression · evaluation     │
-│                                                              │
-└───────────────┬──────────────────────────────┬───────────────┘
-                │                              │
-                ▼                              ▼
-┌──────────────────────────┐      ┌────────────────────────────┐
-│   QUESTION SELECTOR      │      │      BEHAVIOR ENGINE       │
-│                          │      │                            │
-│ Exploration              │      │ Answer → Evidence          │
-│ Discovery                │      │ Evidence → 12D Vector     │
-│ Refinement               │      │                            │
-└────────────┬─────────────┘      └──────────────┬─────────────┘
-             │                                   │
-             └────────────────┬──────────────────┘
-                              ▼
-                 ┌─────────────────────────┐
-                 │     RANKING ENGINE      │
-                 │                         │
-                 │ Multi-signal scoring    │
-                 │ Character comparison    │
-                 │ Match explanation       │
-                 └────────────┬────────────┘
-                              │
-                              ▼
-                       CHARACTER RESULT
+```
+┌───────────────────────────────────────────────────────────┐
+│                        FRONTEND                            │
+│               Next.js · React · TypeScript                 │
+└──────────────────────────────┬──────────────────────────────┘
+                                │ HTTP
+                                ▼
+┌───────────────────────────────────────────────────────────┐
+│                         FASTAPI                             │
+│                     Quiz / API Layer                        │
+└──────────────────────────────┬──────────────────────────────┘
+                                ▼
+┌───────────────────────────────────────────────────────────┐
+│                       QUIZ SERVICE                          │
+│      session state · responses · progression · evaluation   │
+└────────────────┬───────────────────────────┬────────────────┘
+                  ▼                           ▼
+   ┌───────────────────────┐    ┌───────────────────────────┐
+   │   QUESTION SELECTOR    │    │      BEHAVIOR ENGINE       │
+   │  exploration/discovery/│    │  answer → evidence →       │
+   │       refinement       │    │      12D vector             │
+   └────────────┬────────────┘    └──────────────┬─────────────┘
+                └──────────────┬──────────────────┘
+                                ▼
+                 ┌──────────────────────────┐
+                 │      RANKING ENGINE       │
+                 │  multi-signal scoring ·   │
+                 │  comparison · explanation │
+                 └────────────┬───────────────┘
+                                ▼
+                        CHARACTER RESULT
+```
 
-✦ Project Structure
+<details>
+<summary><b>📂 Project Structure</b></summary>
 
+```
 character-resonance-engine/
 │
 ├── frontend/
 │   ├── app/
 │   ├── components/
-│   ├── public/
-│   └── ...
+│   └── public/
 │
 ├── backend/
-│   │
 │   ├── data/
 │   │   ├── behavior_profiles.py
 │   │   ├── character_registry.py
@@ -334,8 +243,7 @@ character-resonance-engine/
 │   │
 │   ├── models/
 │   │   ├── behavior.py
-│   │   ├── compact_option.py
-│   │   └── ...
+│   │   └── compact_option.py
 │   │
 │   ├── services/
 │   │   ├── question_service.py
@@ -347,194 +255,143 @@ character-resonance-engine/
 │   └── main.py
 │
 └── README.md
+```
 
-✦ Supported Universes
+</details>
 
-The archive currently contains characters from:
+<br/>
+
+## 🌌 Supported Universes
 
 <div align="center">
 
-MARVEL · DC · AVATAR: THE LAST AIRBENDER · KUNG FU PANDA
+<img src="https://skillicons.dev/icons?i=nextjs,react,ts,tailwind,py,fastapi&theme=dark" />
+
+<br/><br/>
+
+**MARVEL** · **DC** · **AVATAR: THE LAST AIRBENDER** · **KUNG FU PANDA**
 
 </div>
 
-The character registry is designed so new characters and franchises can be added without changing the core matching architecture.
+The character registry is built so new characters and franchises can be dropped in **without touching the core matching architecture**.
 
-✦ Testing
+<br/>
 
-The project includes a dedicated evaluation harness for validating the ranking system.
+## 🧪 Testing & Evaluation
 
-Self-Ranking
+A dedicated harness (`backend/tests/evaluate_matching.py`) stress-tests the ranking engine.
 
-Known character vectors are passed directly into the ranking engine.
+<div align="center">
 
-Batman       → Batman
-Superman     → Superman
-Toph         → Toph
-Po           → Po
+<table>
+<tr><th>Suite</th><th>Result</th></tr>
+<tr><td>🎯 Self-Ranking (Batman, Superman, Toph, Po)</td><td><img src="https://img.shields.io/badge/4%2F4-100%25-brightgreen?style=flat-square"/></td></tr>
+<tr><td>🌪 Robustness (±0.05 noise, 4 chars × 25 runs)</td><td><img src="https://img.shields.io/badge/100%2F100-100%25-brightgreen?style=flat-square"/></td></tr>
+<tr><td>🔀 Confusion Testing (blended profile pairs)</td><td><img src="https://img.shields.io/badge/ambiguity-mapped-blue?style=flat-square"/></td></tr>
+</table>
 
-Result: 4 / 4 — 100%
+</div>
 
-Robustness
+A fixed random seed keeps every run reproducible.
 
-The same character vectors are perturbed with random noise of up to ±0.05 across the 12 behavioral dimensions.
+```bash
+# from the backend directory
+python -m tests.evaluate_matching
+```
 
-Characters tested:       4
-Runs per character:     25
-Total runs:            100
+<br/>
 
-Correct:               100
-Incorrect:               0
+## 🚀 Running Locally
 
-Robustness:          100.0%
+<table>
+<tr>
+<td width="50%" valign="top">
 
-A fixed random seed is used to make the test reproducible.
+### Backend
 
-Confusion Testing
-
-The evaluation harness also creates blended profiles between character pairs to identify areas where character profiles occupy similar regions of the behavioral space.
-
-This helps expose ambiguous regions rather than hiding them.
-
-✦ Running Locally
-
-Backend
-
+```bash
 cd backend
-
-Create a virtual environment:
-
 python -m venv venv
 
-Windows
-
+# Windows
 venv\Scripts\activate
 
-Install dependencies
-
 pip install -r requirements.txt
-
-Start FastAPI
-
 uvicorn main:app --reload
+```
 
-Backend:
+📍 `http://localhost:8000`
 
-http://localhost:8000
+</td>
+<td width="50%" valign="top">
 
-Frontend
+### Frontend
 
+```bash
 cd frontend
-
-Install dependencies:
-
 npm install
-
-Start the development server:
-
 npm run dev
+```
 
-Frontend:
+📍 `http://localhost:3000`
 
-http://localhost:3000
+</td>
+</tr>
+</table>
 
-✦ Run the Tests
+<br/>
 
-From the backend directory:
-
-python -m tests.evaluate_matching
-
-The evaluation suite currently covers:
-
-✓ Exact self-ranking
-✓ Noisy-vector robustness
-✓ Character confusion
-
-✦ Design Philosophy
-
-The application is intentionally presented as a character-matching experience, not as a scientific personality assessment.
-
-The behavioral model is designed to create an interesting, explainable relationship between:
-
-CHOICE
-  ↓
-BEHAVIOR
-  ↓
-PATTERN
-  ↓
-CHARACTER
-
-The system does not claim to determine who someone objectively is.
-
-It asks something more interesting:
-
-Which fictional character reflects the pattern in the choices you make?
-
-✦ Tech Stack
-
-Frontend
-
-Next.js
-
-React
-
-TypeScript
-
-Tailwind CSS
-
-Backend
-
-Python
-
-FastAPI
-
-Pydantic
-
-Core Engine
-
-12-dimensional behavioral vectors
-
-Adaptive question selection
-
-Multi-signal ranking
-
-Character profile modeling
-
-Match explanation
-
-Automated evaluation
-
-✦ Roadmap
-
-[x] Behavioral vector model
-[x] Character profile system
-[x] Adaptive question selection
-[x] Multi-signal ranking
-[x] Match explanations
-[x] Evaluation harness
-[x] Robustness testing
-[ ] Expanded character archive
-[ ] Larger evaluation dataset
-[ ] Automated profile calibration
-[ ] Improved ambiguity handling
-[ ] Additional universes
-
-✦ Final Thought
+## 🧭 Design Philosophy
 
 <div align="center">
 
-FICTIONAL CHARACTERS ARE MIRRORS.
+The app is presented as a **character-matching experience** — not a scientific personality assessment.
 
-We don't recognize ourselves in a character because we share their story.
+```
+CHOICE → BEHAVIOR → PATTERN → CHARACTER
+```
 
-We recognize something in the way they think, react, decide, and behave.
+It doesn't claim to determine who someone objectively *is*.
+It asks something more interesting:
 
-Every choice leaves a trace.
-
-Every trace forms a pattern.
+**Which fictional character reflects the pattern in the choices you make?**
 
 </div>
 
-<p align="center">
-  <sub>Character Resonance Engine · AX-0900</sub>
-</p>
+<br/>
+
+## 🗺 Roadmap
+
+- [x] Behavioral vector model
+- [x] Character profile system
+- [x] Adaptive question selection
+- [x] Multi-signal ranking
+- [x] Match explanations
+- [x] Evaluation harness
+- [x] Robustness testing
+- [ ] Expanded character archive
+- [ ] Larger evaluation dataset
+- [ ] Automated profile calibration
+- [ ] Improved ambiguity handling
+- [ ] Additional universes
+
+<br/>
+
+<div align="center">
+
+<img width="100%" src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif"/>
+
+### Fictional characters are mirrors.
+
+*We don't recognize ourselves in a character because we share their story.*
+*We recognize something in the way they think, react, decide, and behave.*
+
+**Every choice leaves a trace. Every trace forms a pattern.**
+
+<br/>
+
+<sub>Character Resonance Engine · AX-0900</sub>
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:EC4899,50:9333EA,100:6D28D9&height=120&section=footer"/>
+
+</div>
