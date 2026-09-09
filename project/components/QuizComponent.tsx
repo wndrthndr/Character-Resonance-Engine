@@ -339,10 +339,10 @@ export function QuizComponent({ franchise }: { franchise: string }) {
 
     return (
       <div
-        className={`min-h-dvh w-full overflow-x-hidden bg-[#11110f] text-[#e9e4d7] transition-opacity duration-700 ${
-          entering ? "opacity-0" : "opacity-100"
-        }`}
-      >
+  className={`relative z-[100] min-h-dvh w-full overflow-x-hidden bg-[#11110f] text-[#e9e4d7] transition-opacity duration-700 ${
+    entering ? "opacity-0" : "opacity-100"
+  }`}
+>
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
