@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { PinnedScroll } from '@/components/pinned-scroll';
 import { AtmosphereSection } from '@/components/sections/atmosphere-section';
@@ -17,19 +18,20 @@ export default function Page() {
     setFranchise(selectedFranchise);
     setStage('QUIZ');
   };
+
+  if (stage === 'QUIZ') {
+    return (
+      <main className="min-h-dvh bg-ink">
+        <QuizComponent franchise={franchise!} />
+      </main>
+    );
+  }
+
   return (
     <main className="archive-shell relative bg-ink">
-      <PinnedScroll
-        sections={SECTION_COUNT}
-       
-      >
+      <PinnedScroll sections={SECTION_COUNT}>
         <AtmosphereSection />
-        {stage === 'SELECT' ? (
         <UniverseSection onSelectFranchise={handleFranchiseSelection} />
-      ) : (
-        <QuizComponent franchise={franchise!} />
-      )}
-        
         <CharacterIndexSection />
         <ThesisSection />
       </PinnedScroll>
