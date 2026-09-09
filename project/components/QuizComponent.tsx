@@ -24,7 +24,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
   const startQuiz = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/quiz/start', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/quiz/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ franchise }),
@@ -57,7 +57,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
     setLoading(true);
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/quiz/answer', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/quiz/answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
