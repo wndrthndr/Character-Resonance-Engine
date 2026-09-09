@@ -142,7 +142,7 @@ const filteredCharacters = useMemo(() => {
       index={3}
       label="04 / REGISTRY_GRID"
       fileId="AX-9999"
-      tone="ink"
+
     >
       <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_right,#3b82f6_1px,transparent_1px),linear-gradient(to_bottom,#3b82f6_1px,transparent_1px)] bg-[size:64px_64px] opacity-[0.025]" />
 

@@ -1,18 +1,9 @@
 'use client';
 
 import { useState } from 'react'; // Remove this if not used
-import { useArchive } from '@/components/pinned-scroll'; 
-
+import { useArchiveProgress } from '@/components/pinned-scroll';
 export function HudOverlay() {
-  const context = useArchive();
-  
-  // 1. Fallback to a default state if context or progress is undefined
-  const { progress } = context || {};
-  const { progress: p, activeIndex, total } = progress || { 
-    progress: 0, 
-    activeIndex: 0, 
-    total: 0 
-  };
+  const { progress: p, activeIndex, total } = useArchiveProgress();
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 mix-blend-difference">

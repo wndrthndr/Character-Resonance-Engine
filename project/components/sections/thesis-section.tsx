@@ -8,7 +8,7 @@ export function ThesisSection() {
       index={2}
       label="03 / THESIS"
       fileId="AX-0900"
-      tone="ink"
+
     >
       <div className="relative flex h-full min-h-[80vh] items-center overflow-hidden">
 

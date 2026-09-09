@@ -11,8 +11,13 @@ const universes = [
   { id: '03', title: 'AVATAR:The last airbender', value: 'atla', color: '#6493c4' },
   { id: '04', title: 'DC', value: 'dc', color: '#ffffff' },
 ];
+interface UniverseSectionProps {
+  onSelectFranchise: (selectedFranchise: string) => void;
+}
 
-export function UniverseSection() {
+export function UniverseSection({
+  onSelectFranchise,
+}: UniverseSectionProps) {
   const router = useRouter();
   const [hoveredColor, setHoveredColor] = useState('#3b82f6');
   const [selected, setSelected] = useState<string | null>(null);
@@ -28,12 +33,14 @@ export function UniverseSection() {
   }, [selected, router]);
 
   const handleSelect = (value: string) => {
-    if (selected) return; // ignore extra clicks mid-transition
+    if (selected) return;
+  
     setSelected(value);
+    onSelectFranchise(value);
   };
 
   return (
-    <DossierSection index={1} label="02 / SELECTION" fileId="AX-GATE" tone="ink">
+    <DossierSection index={1} label="02 / SELECTION" fileId="AX-GATE" >
 
       {/* Dynamic Ambient Light Layer */}
       <motion.div
