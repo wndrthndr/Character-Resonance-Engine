@@ -133,61 +133,45 @@ export function PinnedScroll({ children, sections, overlay }: Props) {
   }, []);
 
   useEffect(() => {
-  const wrapper = wrapperRef.current;
-  if (!wrapper || sectionEls.current.length === 0) return;
+    const wrapper = wrapperRef.current;
+    if (!wrapper || sectionEls.current.length === 0) return;
 
-  const ctx = gsap.context(() => {
-    gsap.set(sectionEls.current, {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100vh',
+    // 1. Initial State: Stack absolutely
+    gsap.set(sectionEls.current, { 
+      position: 'absolute', 
+      top: 0, 
+      left: 0, 
+      width: '100%', 
+      height: '100vh' 
     });
 
+    // 2. High-Performance Timeline
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: wrapper,
         start: 'top top',
         end: () => `+=${total * 800}`,
         pin: true,
-        scrub: 0.1,
+        scrub: 0.1, // Near-instant 1:1 tracking
         anticipatePin: 1,
-        fastScrollEnd: true,
+        fastScrollEnd: true, // Optimizes for quick scrolls
         preventOverlaps: true,
-
         onUpdate: (self) => {
-          const active = Math.min(
-            total - 1,
-            Math.round(self.progress * (total - 1))
-          );
-
-          store.set({
-            progress: self.progress,
-            activeIndex: active,
-            total,
-          });
-        },
-      },
+          const active = Math.min(total - 1, Math.round(self.progress * (total - 1)));
+          store.set({ progress: self.progress, activeIndex: active, total });
+        }
+      }
     });
 
+    // 3. Snappy Motion
     sectionEls.current.forEach((sec, i) => {
       if (i === 0) return;
-
-      tl.fromTo(
-        sec,
-        { xPercent: 100 },
-        { xPercent: 0, ease: 'none' },
-        i
-      );
+      // Using 'none' ease for 1:1 scroll feel
+      tl.fromTo(sec, { xPercent: 100 }, { xPercent: 0, ease: 'none' }, i);
     });
-  }, wrapper);
 
-  return () => {
-    ctx.revert();
-    ScrollTrigger.refresh();
-  };
-}, [total, store]);
+    return () => { tl.scrollTrigger?.kill(); };
+  }, [total, store]);
 
   return (
     <ArchiveContext.Provider value={{ goTo: () => {}, registerSection, refresh: () => ScrollTrigger.refresh(), store }}>
