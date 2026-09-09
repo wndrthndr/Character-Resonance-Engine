@@ -358,9 +358,8 @@ if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsW
 
     return (
       <div
-  className={`relative z-[100] min-h-dvh w-full overflow-x-hidden bg-[#11110f] text-[#e9e4d7] transition-opacity duration-700 ${
-    entering ? "opacity-0" : "opacity-100"
-  }`}
+            className="relative mx-auto flex w-full max-w-[1000px] flex-col px-5 sm:px-8 lg:px-12"
+
 >
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
