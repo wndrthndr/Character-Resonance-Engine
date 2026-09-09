@@ -3,7 +3,6 @@
 import {
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 
@@ -32,17 +31,24 @@ type Character = {
 };
 
 export function CharacterIndexSection() {
-  const gridContainerRef = useRef<HTMLDivElement>(null);
-
   const [characters, setCharacters] = useState<Character[]>([]);
   const [selected, setSelected] = useState<Character | null>(null);
-  const [activeFranchise, setActiveFranchise] = useState('all');
+
+  const [activeFranchise, setActiveFranchise] =
+    useState('all');
+
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] =
+    useState('');
+
   const [loading, setLoading] = useState(true);
 
+  // Mobile switches between registry and profile.
+  const [mobileView, setMobileView] =
+    useState<'registry' | 'profile'>('registry');
+
   // --------------------------------------------------
-  // DEBOUNCE SEARCH
+  // SEARCH DEBOUNCE
   // --------------------------------------------------
 
   useEffect(() => {
@@ -54,7 +60,7 @@ export function CharacterIndexSection() {
   }, [search]);
 
   // --------------------------------------------------
-  // FETCH CHARACTERS
+  // LOAD CHARACTERS
   // --------------------------------------------------
 
   useEffect(() => {
@@ -74,11 +80,14 @@ export function CharacterIndexSection() {
 
         setCharacters(data);
 
-        if (data.length) {
+        if (data.length > 0) {
           setSelected(data[0]);
         }
       } catch (error) {
-        console.error('Registry error:', error);
+        console.error(
+          'Registry error:',
+          error
+        );
       } finally {
         setLoading(false);
       }
@@ -95,7 +104,10 @@ export function CharacterIndexSection() {
     const unique = Array.from(
       new Set(
         characters
-          .map((char) => char.franchise)
+          .map(
+            (character) =>
+              character.franchise
+          )
           .filter(Boolean)
       )
     ) as string[];
@@ -104,62 +116,93 @@ export function CharacterIndexSection() {
   }, [characters]);
 
   // --------------------------------------------------
-  // FILTER CHARACTERS
+  // FILTER
   // --------------------------------------------------
 
   const filteredCharacters = useMemo(() => {
-    const query = debouncedSearch.trim().toLowerCase();
+    const query =
+      debouncedSearch
+        .trim()
+        .toLowerCase();
 
-    const matched = characters.filter((character) => {
-      const franchiseMatch =
-        activeFranchise === 'all' ||
-        character.franchise === activeFranchise;
+    const matched =
+      characters.filter(
+        (character) => {
+          const franchiseMatch =
+            activeFranchise === 'all' ||
+            character.franchise ===
+              activeFranchise;
 
-      if (!franchiseMatch) return false;
+          if (!franchiseMatch) {
+            return false;
+          }
 
-      if (!query) return true;
+          if (!query) {
+            return true;
+          }
 
-      const nameMatch =
-        character.name.toLowerCase().includes(query);
+          const nameMatch =
+            character.name
+              .toLowerCase()
+              .includes(query);
 
-      const taglineMatch =
-        character.tagline
-          ?.toLowerCase()
-          .includes(query) ?? false;
+          const taglineMatch =
+            character.tagline
+              ?.toLowerCase()
+              .includes(query) ??
+            false;
 
-      const descMatch =
-        character.desc
-          ?.toLowerCase()
-          .includes(query) ?? false;
+          const descMatch =
+            character.desc
+              ?.toLowerCase()
+              .includes(query) ??
+            false;
 
-      const franchiseTextMatch =
-        character.franchise
-          ?.toLowerCase()
-          .includes(query) ?? false;
+          const franchiseMatchText =
+            character.franchise
+              ?.toLowerCase()
+              .includes(query) ??
+            false;
 
-      const traitMatch =
-        character.traits?.some((trait) =>
-          trait.toLowerCase().includes(query)
-        ) ?? false;
+          const traitMatch =
+            character.traits?.some(
+              (trait) =>
+                trait
+                  .toLowerCase()
+                  .includes(query)
+            ) ?? false;
 
-      return (
-        nameMatch ||
-        taglineMatch ||
-        descMatch ||
-        franchiseTextMatch ||
-        traitMatch
+          return (
+            nameMatch ||
+            taglineMatch ||
+            descMatch ||
+            franchiseMatchText ||
+            traitMatch
+          );
+        }
       );
-    });
 
-    // Shuffle only when showing everything
-    // and there is no search.
-    if (activeFranchise === 'all' && !query) {
+    // Shuffle only for "all"
+    // without search.
+    if (
+      activeFranchise === 'all' &&
+      !query
+    ) {
       const shuffled = [...matched];
 
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+      for (
+        let i = shuffled.length - 1;
+        i > 0;
+        i--
+      ) {
+        const j = Math.floor(
+          Math.random() * (i + 1)
+        );
 
-        [shuffled[i], shuffled[j]] = [
+        [
+          shuffled[i],
+          shuffled[j],
+        ] = [
           shuffled[j],
           shuffled[i],
         ];
@@ -176,41 +219,58 @@ export function CharacterIndexSection() {
   ]);
 
   // --------------------------------------------------
-  // RESET GRID SCROLL
+  // KEEP SELECTED VALID
   // --------------------------------------------------
 
   useEffect(() => {
-    if (gridContainerRef.current) {
-      gridContainerRef.current.scrollTop = 0;
-    }
-  }, [activeFranchise, debouncedSearch]);
-
-  // --------------------------------------------------
-  // FALLBACK SELECTION
-  // --------------------------------------------------
-
-  useEffect(() => {
-    if (filteredCharacters.length === 0) {
+    if (
+      filteredCharacters.length === 0
+    ) {
       setSelected(null);
       return;
     }
 
-    const stillExists = filteredCharacters.some(
-      (character) =>
-        character.name === selected?.name
-    );
+    const stillExists =
+      filteredCharacters.some(
+        (character) =>
+          character.name ===
+          selected?.name
+      );
 
     if (!stillExists) {
-      setSelected(filteredCharacters[0]);
+      setSelected(
+        filteredCharacters[0]
+      );
     }
-  }, [filteredCharacters, selected?.name]);
+  }, [
+    filteredCharacters,
+    selected?.name,
+  ]);
 
   // --------------------------------------------------
-  // ACCENT
+  // SELECT CHARACTER
   // --------------------------------------------------
+
+  function selectCharacter(
+    character: Character
+  ) {
+    setSelected(character);
+
+    // On mobile, switch to profile.
+    setMobileView('profile');
+  }
+
+  // --------------------------------------------------
+  // BACK TO REGISTRY
+  // --------------------------------------------------
+
+  function backToRegistry() {
+    setMobileView('registry');
+  }
 
   const accent =
-    selected?.geometry?.color || '#3b82f6';
+    selected?.geometry?.color ||
+    '#3b82f6';
 
   return (
     <DossierSection
@@ -218,9 +278,9 @@ export function CharacterIndexSection() {
       label="04 / REGISTRY_GRID"
       fileId="AX-9999"
     >
-      {/* ------------------------------------------------
-          BACKGROUND GRID
-      ------------------------------------------------ */}
+      {/* =====================================================
+          BACKGROUND
+      ===================================================== */}
 
       <div
         className="
@@ -234,13 +294,10 @@ export function CharacterIndexSection() {
         "
       />
 
-      {/* ------------------------------------------------
-          ACCENT BACKGROUND
-      ------------------------------------------------ */}
-
       <motion.div
         animate={{
-          backgroundColor: `${accent}0a`,
+          backgroundColor:
+            `${accent}0a`,
         }}
         transition={{
           duration: 0.7,
@@ -253,9 +310,11 @@ export function CharacterIndexSection() {
         "
       />
 
-      {/* =================================================
-          MAIN RESPONSIVE CONTAINER
-      ================================================= */}
+      {/* =====================================================
+          =====================================================
+          MOBILE UI
+          =====================================================
+          ===================================================== */}
 
       <div
         className="
@@ -266,7 +325,6 @@ export function CharacterIndexSection() {
           min-h-0
           w-full
           flex-col
-          gap-6
           overflow-hidden
           p-4
           pt-14
@@ -274,8 +332,1053 @@ export function CharacterIndexSection() {
           sm:p-6
           sm:pt-16
 
-          md:flex-row
-          md:gap-8
+          md:hidden
+        "
+      >
+        <AnimatePresence mode="wait">
+
+          {/* =================================================
+              MOBILE REGISTRY
+          ================================================= */}
+
+          {mobileView === 'registry' && (
+            <motion.div
+              key="mobile-registry"
+              initial={{
+                opacity: 0,
+                x: -20,
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+              }}
+              exit={{
+                opacity: 0,
+                x: -20,
+              }}
+              transition={{
+                duration: 0.25,
+              }}
+              className="
+                flex
+                h-full
+                min-h-0
+                flex-col
+              "
+            >
+
+              {/* ---------------------------------------------
+                  HEADER
+              --------------------------------------------- */}
+
+              <div
+                className="
+                  mb-4
+                  flex
+                  shrink-0
+                  items-end
+                  justify-between
+                  border-b
+                  border-white/10
+                  pb-3
+                "
+              >
+                <div>
+                  <div
+                    className="
+                      mb-1
+                      font-mono
+                      text-[7px]
+                      uppercase
+                      tracking-[0.3em]
+                      text-white/30
+                    "
+                  >
+                    AX-9999 / CHARACTER INDEX
+                  </div>
+
+                  <h2
+                    className="
+                      font-display
+                      text-2xl
+                      font-black
+                      uppercase
+                      leading-none
+                      tracking-tight
+                      text-white
+
+                      sm:text-3xl
+                    "
+                  >
+                    Registry
+                  </h2>
+                </div>
+
+                <div
+                  className="
+                    text-right
+                    font-mono
+                  "
+                >
+                  <div
+                    className="
+                      text-[8px]
+                      uppercase
+                      tracking-[0.2em]
+                      text-white/30
+                    "
+                  >
+                    Records
+                  </div>
+
+                  <div
+                    className="
+                      text-lg
+                      font-bold
+                      text-white
+                    "
+                  >
+                    {filteredCharacters.length
+                      .toString()
+                      .padStart(
+                        2,
+                        '0'
+                      )}
+                  </div>
+                </div>
+              </div>
+
+              {/* ---------------------------------------------
+                  FRANCHISE FILTERS
+              --------------------------------------------- */}
+
+              <div
+                className="
+                  mb-3
+                  shrink-0
+                  overflow-x-auto
+                  [scrollbar-width:none]
+                  [&::-webkit-scrollbar]:hidden
+                "
+              >
+                <div
+                  className="
+                    flex
+                    w-max
+                    gap-2
+                  "
+                >
+                  {franchises.map(
+                    (franchise) => {
+                      const active =
+                        activeFranchise ===
+                        franchise;
+
+                      return (
+                        <button
+                          key={franchise}
+                          onClick={() =>
+                            setActiveFranchise(
+                              franchise
+                            )
+                          }
+                          className={`
+                            relative
+                            shrink-0
+                            border
+                            px-3
+                            py-2
+                            font-mono
+                            text-[8px]
+                            font-semibold
+                            uppercase
+                            tracking-[0.15em]
+                            transition-all
+
+                            ${
+                              active
+                                ? 'border-[#3b82f6] bg-[#3b82f6]/10 text-[#3b82f6]'
+                                : 'border-white/10 text-white/50'
+                            }
+                          `}
+                        >
+                          {formatFranchise(
+                            franchise
+                          )}
+
+                          {active && (
+                            <motion.div
+                              layoutId="mobile-filter"
+                              className="
+                                absolute
+                                bottom-[-1px]
+                                left-0
+                                h-[2px]
+                                w-full
+                                bg-[#3b82f6]
+                              "
+                            />
+                          )}
+                        </button>
+                      );
+                    }
+                  )}
+                </div>
+              </div>
+
+              {/* ---------------------------------------------
+                  SEARCH
+              --------------------------------------------- */}
+
+              <div
+                className="
+                  mb-4
+                  flex
+                  h-9
+                  shrink-0
+                  items-center
+                  border
+                  border-white/10
+                  bg-black/40
+                  focus-within:border-[#3b82f6]
+                "
+              >
+                <span
+                  className="
+                    pl-3
+                    font-mono
+                    text-[#3b82f6]
+                  "
+                >
+                  /
+                </span>
+
+                <input
+                  value={search}
+                  onChange={(e) =>
+                    setSearch(
+                      e.target.value
+                    )
+                  }
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === 'Escape'
+                    ) {
+                      setSearch('');
+                    }
+                  }}
+                  placeholder="SEARCH NAME, TRAIT..."
+                  className="
+                    min-w-0
+                    flex-1
+                    bg-transparent
+                    px-3
+                    font-mono
+                    text-[8px]
+                    uppercase
+                    tracking-[0.15em]
+                    text-white
+                    outline-none
+                    placeholder:text-white/25
+                  "
+                />
+
+                {search && (
+                  <button
+                    onClick={() =>
+                      setSearch('')
+                    }
+                    className="
+                      px-3
+                      font-mono
+                      text-[10px]
+                      text-white/40
+                    "
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {/* ---------------------------------------------
+                  GRID LABEL
+              --------------------------------------------- */}
+
+              <div
+                className="
+                  mb-2
+                  flex
+                  shrink-0
+                  items-center
+                  justify-between
+                  font-mono
+                  text-[7px]
+                  uppercase
+                  tracking-[0.2em]
+                  text-white/30
+                "
+              >
+                <span>
+                  Displaying //
+                  {' '}
+                  {filteredCharacters.length}
+                </span>
+
+                <span>
+                  Swipe →
+                </span>
+              </div>
+
+              {/* =================================================
+                  MOBILE CHARACTER GRID
+
+                  IMPORTANT:
+                  NO VERTICAL SCROLL.
+
+                  Cards are placed in 2 rows and the whole
+                  registry moves horizontally.
+              ================================================= */}
+
+              <div
+                className="
+                  min-h-0
+                  flex-1
+                  overflow-x-auto
+                  overflow-y-hidden
+                  [scrollbar-width:none]
+                  [&::-webkit-scrollbar]:hidden
+                "
+              >
+                {loading ? (
+                  <div
+                    className="
+                      flex
+                      h-full
+                      min-w-full
+                      items-center
+                      justify-center
+                      font-mono
+                      text-[8px]
+                      uppercase
+                      tracking-[0.3em]
+                      text-white/30
+                    "
+                  >
+                    Loading Registry...
+                  </div>
+                ) : filteredCharacters.length ===
+                  0 ? (
+                  <div
+                    className="
+                      flex
+                      h-full
+                      min-w-full
+                      flex-col
+                      items-center
+                      justify-center
+                      gap-3
+                      font-mono
+                    "
+                  >
+                    <span
+                      className="
+                        text-[9px]
+                        uppercase
+                        tracking-[0.15em]
+                        text-white/30
+                      "
+                    >
+                      No Matching Records
+                    </span>
+
+                    <button
+                      onClick={() => {
+                        setSearch('');
+                        setActiveFranchise(
+                          'all'
+                        );
+                      }}
+                      className="
+                        border
+                        border-white/20
+                        bg-white/5
+                        px-3
+                        py-1.5
+                        text-[7px]
+                        uppercase
+                        tracking-[0.15em]
+                        text-white
+                      "
+                    >
+                      Reset Filters
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    className="
+                      grid
+                      h-full
+                      grid-flow-col
+                      grid-rows-2
+                      auto-cols-[120px]
+                      gap-3
+                      pb-2
+
+                      sm:auto-cols-[145px]
+                    "
+                  >
+                    <AnimatePresence mode="popLayout">
+                      {filteredCharacters.map(
+                        (
+                          character
+                        ) => {
+                          const isActive =
+                            selected?.name ===
+                            character.name;
+
+                          const cardAccent =
+                            character
+                              .geometry
+                              ?.color ||
+                            '#3b82f6';
+
+                          return (
+                            <motion.button
+                              layout
+                              key={`${character.franchise}-${character.name}`}
+                              initial={{
+                                opacity: 0,
+                                scale: 0.96,
+                              }}
+                              animate={{
+                                opacity: 1,
+                                scale: 1,
+                              }}
+                              exit={{
+                                opacity: 0,
+                                scale: 0.9,
+                              }}
+                              whileTap={{
+                                scale: 0.96,
+                              }}
+                              onClick={() =>
+                                selectCharacter(
+                                  character
+                                )
+                              }
+                              className={`
+                                group
+                                relative
+                                min-h-0
+                                overflow-hidden
+                                border
+                                bg-black
+                                text-left
+
+                                ${
+                                  isActive
+                                    ? 'border-white'
+                                    : 'border-white/10'
+                                }
+                              `}
+                            >
+                              {/* IMAGE */}
+
+                              {character.image ? (
+                                <img
+                                  src={
+                                    character.image
+                                  }
+                                  alt={
+                                    character.name
+                                  }
+                                  loading="lazy"
+                                  className="
+                                    absolute
+                                    inset-0
+                                    h-full
+                                    w-full
+                                    object-cover
+                                    object-top
+                                    opacity-80
+                                    transition-transform
+                                    duration-500
+                                    group-active:scale-105
+                                  "
+                                />
+                              ) : (
+                                <div
+                                  className="
+                                    absolute
+                                    inset-0
+                                    flex
+                                    items-center
+                                    justify-center
+                                    font-mono
+                                    text-[6px]
+                                    uppercase
+                                    tracking-[0.15em]
+                                    text-white/20
+                                  "
+                                >
+                                  Image Pending
+                                </div>
+                              )}
+
+                              {/* OVERLAY */}
+
+                              <div
+                                className="
+                                  absolute
+                                  inset-0
+                                  bg-gradient-to-t
+                                  from-black
+                                  via-black/20
+                                  to-transparent
+                                "
+                              />
+
+                              {/* INFO */}
+
+                              <div
+                                className="
+                                  absolute
+                                  inset-x-0
+                                  bottom-0
+                                  z-10
+                                  p-2
+                                "
+                              >
+                                <div
+                                  className="
+                                    mb-0.5
+                                    truncate
+                                    font-mono
+                                    text-[5px]
+                                    uppercase
+                                    tracking-[0.15em]
+                                    text-white/40
+                                  "
+                                >
+                                  {formatFranchise(
+                                    character.franchise ||
+                                      'unknown'
+                                  )}
+                                </div>
+
+                                <h3
+                                  className="
+                                    line-clamp-2
+                                    font-display
+                                    text-xs
+                                    font-black
+                                    uppercase
+                                    leading-tight
+                                    text-white
+                                  "
+                                >
+                                  {
+                                    character.name
+                                  }
+                                </h3>
+
+                                <div
+                                  className="
+                                    mt-1.5
+                                    h-[2px]
+                                  "
+                                  style={{
+                                    width:
+                                      isActive
+                                        ? '100%'
+                                        : '30%',
+                                    backgroundColor:
+                                      cardAccent,
+                                  }}
+                                />
+                              </div>
+
+                              {/* ACTIVE */}
+
+                              {isActive && (
+                                <div
+                                  className="
+                                    absolute
+                                    right-2
+                                    top-2
+                                    z-20
+                                    h-1.5
+                                    w-1.5
+                                  "
+                                  style={{
+                                    backgroundColor:
+                                      cardAccent,
+                                  }}
+                                />
+                              )}
+                            </motion.button>
+                          );
+                        }
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+              </div>
+
+              {/* ---------------------------------------------
+                  MOBILE HINT
+              --------------------------------------------- */}
+
+              <div
+                className="
+                  mt-2
+                  flex
+                  shrink-0
+                  items-center
+                  justify-between
+                  font-mono
+                  text-[6px]
+                  uppercase
+                  tracking-[0.2em]
+                  text-white/20
+                "
+              >
+                <span>
+                  Select a record
+                </span>
+
+                <span>
+                  Registry / 04
+                </span>
+              </div>
+            </motion.div>
+          )}
+
+          {/* =================================================
+              MOBILE PROFILE
+          ================================================= */}
+
+          {mobileView === 'profile' &&
+            selected && (
+              <motion.div
+                key="mobile-profile"
+                initial={{
+                  opacity: 0,
+                  x: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  x: 20,
+                }}
+                transition={{
+                  duration: 0.25,
+                }}
+                className="
+                  flex
+                  h-full
+                  min-h-0
+                  flex-col
+                "
+              >
+
+                {/* ---------------------------------------------
+                    PROFILE HEADER
+                --------------------------------------------- */}
+
+                <div
+                  className="
+                    mb-3
+                    flex
+                    shrink-0
+                    items-center
+                    justify-between
+                  "
+                >
+                  <button
+                    onClick={
+                      backToRegistry
+                    }
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                      border
+                      border-white/10
+                      bg-white/[0.03]
+                      px-3
+                      py-2
+                      font-mono
+                      text-[7px]
+                      uppercase
+                      tracking-[0.2em]
+                      text-white/60
+                    "
+                  >
+                    <span>
+                      ←
+                    </span>
+
+                    Registry
+                  </button>
+
+                  <span
+                    className="
+                      font-mono
+                      text-[7px]
+                      uppercase
+                      tracking-[0.25em]
+                      text-white/20
+                    "
+                  >
+                    Active Profile
+                  </span>
+                </div>
+
+                {/* ---------------------------------------------
+                    PROFILE CONTENT
+                --------------------------------------------- */}
+
+                <div
+                  className="
+                    min-h-0
+                    flex-1
+                    overflow-hidden
+                    border
+                    border-white/10
+                    bg-black
+                  "
+                >
+                  <div
+                    className="
+                      relative
+                      flex
+                      h-full
+                      min-h-0
+                      flex-col
+                      overflow-hidden
+                    "
+                  >
+
+                    {/* IMAGE */}
+
+                    {selected.image ? (
+                      <motion.img
+                        key={
+                          selected.name
+                        }
+                        initial={{
+                          scale: 1.08,
+                          opacity: 0,
+                        }}
+                        animate={{
+                          scale: 1,
+                          opacity: 1,
+                        }}
+                        transition={{
+                          duration: 0.4,
+                        }}
+                        src={
+                          selected.image
+                        }
+                        alt={
+                          selected.name
+                        }
+                        className="
+                          absolute
+                          inset-0
+                          h-full
+                          w-full
+                          object-cover
+                          object-top
+                        "
+                      />
+                    ) : (
+                      <div
+                        className="
+                          absolute
+                          inset-0
+                          bg-white/[0.02]
+                        "
+                      />
+                    )}
+
+                    {/* IMAGE OVERLAY */}
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        inset-0
+                        bg-gradient-to-b
+                        from-black/40
+                        via-black/30
+                        to-black
+                      "
+                    />
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        inset-x-0
+                        bottom-0
+                        h-[75%]
+                        bg-gradient-to-t
+                        from-[#070809]
+                        via-[#070809]/95
+                        to-transparent
+                      "
+                    />
+
+                    {/* PROFILE DATA */}
+
+                    <div
+                      className="
+                        relative
+                        z-10
+                        mt-auto
+                        p-4
+
+                        sm:p-6
+                      "
+                    >
+
+                      {/* FRANCHISE */}
+
+                      <div
+                        className="
+                          mb-1
+                          font-mono
+                          text-[7px]
+                          font-bold
+                          uppercase
+                          tracking-[0.25em]
+
+                          sm:text-[9px]
+                        "
+                        style={{
+                          color: accent,
+                        }}
+                      >
+                        {formatFranchise(
+                          selected.franchise ||
+                            'unknown'
+                        )}
+                      </div>
+
+                      {/* NAME */}
+
+                      <h2
+                        className="
+                          max-w-full
+                          font-display
+                          text-3xl
+                          font-black
+                          uppercase
+                          leading-[0.9]
+                          tracking-tight
+                          text-white
+
+                          sm:text-4xl
+                        "
+                      >
+                        {
+                          selected.name
+                        }
+                      </h2>
+
+                      {/* LINE */}
+
+                      <div
+                        className="
+                          my-2
+                          h-[3px]
+                          w-12
+                        "
+                        style={{
+                          backgroundColor:
+                            accent,
+                        }}
+                      />
+
+                      {/* TAGLINE */}
+
+                      {selected.tagline && (
+                        <div
+                          className="
+                            mb-2
+                            inline-block
+                            max-w-full
+                            border
+                            border-white/10
+                            bg-white/5
+                            px-2
+                            py-1
+                          "
+                        >
+                          <span
+                            className="
+                              block
+                              truncate
+                              font-mono
+                              text-[7px]
+                              font-semibold
+                              uppercase
+                              tracking-[0.15em]
+                              text-white/80
+                            "
+                          >
+                            {
+                              selected.tagline
+                            }
+                          </span>
+                        </div>
+                      )}
+
+                      {/* DESCRIPTION */}
+
+                      {selected.desc && (
+                        <div
+                          className="
+                            mb-3
+                            border-l-2
+                            py-1
+                            pl-3
+                          "
+                          style={{
+                            borderColor:
+                              `${accent}aa`,
+                          }}
+                        >
+                          <p
+                            className="
+                              line-clamp-4
+                              font-mono
+                              text-[9px]
+                              leading-relaxed
+                              tracking-wide
+                              text-white/75
+
+                              sm:text-[10px]
+                            "
+                          >
+                            {
+                              selected.desc
+                            }
+                          </p>
+                        </div>
+                      )}
+
+                      {/* VECTOR */}
+
+                      {selected.trait_vector &&
+                        selected
+                          .trait_vector
+                          .length >
+                          0 && (
+                          <div
+                            className="
+                              rounded-sm
+                              border
+                              border-white/10
+                              bg-black/50
+                              p-2
+                              backdrop-blur-sm
+                            "
+                          >
+                            <div
+                              className="
+                                mb-1
+                                font-mono
+                                text-[6px]
+                                font-bold
+                                tracking-[0.2em]
+                              "
+                              style={{
+                                color:
+                                  accent,
+                              }}
+                            >
+                              VECTOR
+                              {' '}
+                              / SYNCED
+                            </div>
+
+                            <div
+                              className="
+                                flex
+                                h-6
+                                items-end
+                                gap-1
+                              "
+                            >
+                              {selected.trait_vector.map(
+                                (
+                                  val,
+                                  idx
+                                ) => (
+                                  <div
+                                    key={
+                                      idx
+                                    }
+                                    className="
+                                      flex-1
+                                      rounded-t-xs
+                                    "
+                                    style={{
+                                      height: `${Math.max(
+                                        15,
+                                        Math.min(
+                                          100,
+                                          val *
+                                            100
+                                        )
+                                      )}%`,
+                                      backgroundColor:
+                                        idx %
+                                          2 ===
+                                        0
+                                          ? accent
+                                          : `${accent}88`,
+                                    }}
+                                  />
+                                )
+                              )}
+                            </div>
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+        </AnimatePresence>
+      </div>
+
+      {/* =====================================================
+          =====================================================
+          DESKTOP UI
+          =====================================================
+          ===================================================== */}
+
+      <div
+        className="
+          relative
+          z-10
+          hidden
+          h-full
+          min-h-0
+          w-full
+          gap-8
+          overflow-hidden
+          p-8
+          pt-16
+
+          md:flex
           md:p-10
           md:pt-20
 
@@ -284,20 +1387,18 @@ export function CharacterIndexSection() {
       >
 
         {/* =================================================
-            CHARACTER PROFILE / POSTER
+            DESKTOP POSTER
         ================================================= */}
 
         <aside
           className="
             relative
-            w-full
+            w-[300px]
             shrink-0
             overflow-hidden
-
-            md:w-[300px]
-            md:border-r
-            md:border-white/10
-            md:pr-6
+            border-r
+            border-white/10
+            pr-6
 
             lg:w-[350px]
           "
@@ -319,38 +1420,28 @@ export function CharacterIndexSection() {
                   duration: 0.45,
                 }}
                 className="
-                  relative
+                  absolute
+                  inset-0
                   flex
-                  min-h-0
-                  w-full
                   flex-col
                   justify-between
-                  overflow-hidden
-                  rounded-sm
-                  border
-                  border-white/10
-
-                  aspect-[4/5]
-
-                  sm:aspect-[16/9]
-
-                  md:absolute
-                  md:inset-0
-                  md:aspect-auto
-                  md:rounded-none
-                  md:border-0
+                  p-6
                 "
               >
 
-                {/* =================================================
-                    CHARACTER IMAGE
-                ================================================= */}
+                {/* IMAGE */}
 
                 {selected.image ? (
                   <motion.img
-                    key={selected.name}
-                    src={selected.image}
-                    alt={selected.name}
+                    key={
+                      selected.name
+                    }
+                    src={
+                      selected.image
+                    }
+                    alt={
+                      selected.name
+                    }
                     initial={{
                       scale: 1.3,
                       opacity: 0,
@@ -373,7 +1464,6 @@ export function CharacterIndexSection() {
                       h-full
                       w-full
                       object-cover
-                      object-top
                     "
                   />
                 ) : (
@@ -393,7 +1483,7 @@ export function CharacterIndexSection() {
                         -translate-y-1/2
                         whitespace-nowrap
                         font-mono
-                        text-[9px]
+                        text-[10px]
                         uppercase
                         tracking-[0.3em]
                         text-white/20
@@ -404,9 +1494,7 @@ export function CharacterIndexSection() {
                   </div>
                 )}
 
-                {/* =================================================
-                    IMAGE OVERLAYS
-                ================================================= */}
+                {/* OVERLAYS */}
 
                 <div
                   className="
@@ -414,7 +1502,7 @@ export function CharacterIndexSection() {
                     absolute
                     inset-0
                     bg-gradient-to-b
-                    from-black/50
+                    from-black/40
                     via-black/20
                     to-black
                   "
@@ -426,7 +1514,7 @@ export function CharacterIndexSection() {
                     absolute
                     inset-x-0
                     bottom-0
-                    h-[80%]
+                    h-[75%]
                     bg-gradient-to-t
                     from-[#070809]
                     via-[#070809]/90
@@ -434,9 +1522,7 @@ export function CharacterIndexSection() {
                   "
                 />
 
-                {/* =================================================
-                    TOP BADGE
-                ================================================= */}
+                {/* BADGE */}
 
                 <div
                   className="
@@ -444,75 +1530,60 @@ export function CharacterIndexSection() {
                     z-20
                     flex
                     items-center
-                    justify-between
-                    p-4
-
-                    sm:p-5
-
-                    md:p-6
+                    gap-2
                   "
                 >
-                  <div
+                  <span
                     className="
+                      relative
                       flex
-                      items-center
-                      gap-2
+                      h-2
+                      w-2
                     "
                   >
                     <span
                       className="
-                        relative
-                        flex
-                        h-2
-                        w-2
+                        absolute
+                        h-full
+                        w-full
+                        animate-ping
+                        rounded-full
                       "
-                    >
-                      <span
-                        className="
-                          absolute
-                          h-full
-                          w-full
-                          animate-ping
-                          rounded-full
-                        "
-                        style={{
-                          backgroundColor: accent,
-                        }}
-                      />
-
-                      <span
-                        className="
-                          relative
-                          h-2
-                          w-2
-                          rounded-full
-                        "
-                        style={{
-                          backgroundColor: accent,
-                        }}
-                      />
-                    </span>
+                      style={{
+                        backgroundColor:
+                          accent,
+                      }}
+                    />
 
                     <span
                       className="
-                        font-mono
-                        text-[8px]
-                        font-semibold
-                        uppercase
-                        tracking-[0.25em]
-                        text-white/80
-
-                        sm:text-[9px]
+                        relative
+                        h-2
+                        w-2
+                        rounded-full
                       "
-                    >
-                      Active Profile
-                    </span>
-                  </div>
+                      style={{
+                        backgroundColor:
+                          accent,
+                      }}
+                    />
+                  </span>
+
+                  <span
+                    className="
+                      font-mono
+                      text-[9px]
+                      font-semibold
+                      uppercase
+                      tracking-[0.3em]
+                      text-white/80
+                    "
+                  >
+                    Active Profile
+                  </span>
                 </div>
 
-                {/* =================================================
-                    CHARACTER INFORMATION
-                ================================================= */}
+                {/* INFO */}
 
                 <motion.div
                   initial={{
@@ -531,26 +1602,16 @@ export function CharacterIndexSection() {
                     relative
                     z-20
                     mt-auto
-                    p-4
-                    pt-10
-
-                    sm:p-5
-
-                    md:p-6
                   "
                 >
-                  {/* FRANCHISE */}
-
                   <div
                     className="
                       mb-2
                       font-mono
-                      text-[8px]
+                      text-[10px]
                       font-bold
                       uppercase
-                      tracking-[0.25em]
-
-                      sm:text-[10px]
+                      tracking-[0.3em]
                     "
                     style={{
                       color: accent,
@@ -562,27 +1623,23 @@ export function CharacterIndexSection() {
                     )}
                   </div>
 
-                  {/* NAME */}
-
                   <h2
                     className="
                       font-display
-                      text-3xl
+                      text-4xl
                       font-black
                       uppercase
                       leading-[0.9]
                       tracking-tight
                       text-white
 
-                      sm:text-4xl
-
-                      md:text-5xl
+                      lg:text-5xl
                     "
                   >
-                    {selected.name}
+                    {
+                      selected.name
+                    }
                   </h2>
-
-                  {/* ACCENT LINE */}
 
                   <motion.div
                     initial={{
@@ -600,158 +1657,136 @@ export function CharacterIndexSection() {
                       h-[3px]
                     "
                     style={{
-                      backgroundColor: accent,
+                      backgroundColor:
+                        accent,
                     }}
                   />
 
-                  {/* =================================================
-                      TAGLINE + DESCRIPTION
-                  ================================================= */}
-
-                  <div
-                    className="
-                      space-y-2
-                    "
-                  >
-                    {selected.tagline && (
-                      <div
+                  {selected.tagline && (
+                    <div
+                      className="
+                        mb-2
+                        inline-block
+                        rounded-xs
+                        border
+                        border-white/10
+                        bg-white/5
+                        px-2
+                        py-0.5
+                      "
+                    >
+                      <p
                         className="
-                          inline-block
-                          max-w-full
-                          rounded-xs
-                          border
-                          border-white/10
-                          bg-white/5
-                          px-2
-                          py-1
-                          backdrop-blur-xs
+                          font-mono
+                          text-[9px]
+                          font-semibold
+                          uppercase
+                          tracking-[0.2em]
+                          text-white/90
                         "
                       >
-                        <p
-                          className="
-                            truncate
-                            font-mono
-                            text-[8px]
-                            font-semibold
-                            uppercase
-                            tracking-[0.15em]
-                            text-white/90
+                        {
+                          selected.tagline
+                        }
+                      </p>
+                    </div>
+                  )}
 
-                            sm:text-[9px]
-                          "
-                        >
-                          {selected.tagline}
-                        </p>
-                      </div>
-                    )}
-
-                    {selected.desc && (
-                      <div
+                  {selected.desc && (
+                    <div
+                      className="
+                        relative
+                        border-l-2
+                        py-1
+                        pl-3
+                      "
+                      style={{
+                        borderColor:
+                          `${accent}aa`,
+                      }}
+                    >
+                      <p
                         className="
-                          relative
-                          border-l-2
-                          py-1
-                          pl-3
+                          max-w-[280px]
+                          font-mono
+                          text-[11px]
+                          leading-relaxed
+                          tracking-wide
+                          text-white/80
                         "
-                        style={{
-                          borderColor: `${accent}aa`,
-                        }}
                       >
-                        <p
-                          className="
-                            max-w-[280px]
-                            font-mono
-                            text-[9px]
-                            leading-relaxed
-                            tracking-wide
-                            text-white/80
-
-                            sm:text-[11px]
-                          "
-                        >
-                          {selected.desc}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* =================================================
-                      VECTOR SIGNAL
-                  ================================================= */}
+                        {
+                          selected.desc
+                        }
+                      </p>
+                    </div>
+                  )}
 
                   {selected.trait_vector &&
-                    selected.trait_vector.length >
+                    selected
+                      .trait_vector
+                      .length >
                       0 && (
                       <div
                         className="
-                          mt-4
+                          mt-5
                           rounded-sm
                           border
                           border-white/10
                           bg-black/40
-                          p-2.5
-                          backdrop-blur-xs
-
-                          sm:mt-5
-                          sm:p-3
+                          p-3
                         "
                       >
                         <div
                           className="
                             mb-2
-                            flex
-                            items-center
-                            justify-between
+                            font-mono
+                            text-[8px]
+                            font-bold
+                            tracking-widest
                           "
+                          style={{
+                            color:
+                              accent,
+                          }}
                         >
-                          <span
-                            className="
-                              font-mono
-                              text-[7px]
-                              font-bold
-                              tracking-widest
-
-                              sm:text-[8px]
-                            "
-                            style={{
-                              color: accent,
-                            }}
-                          >
-                            SYNCED
-                          </span>
+                          SYNCED
                         </div>
 
                         <div
                           className="
                             flex
-                            h-6
+                            h-8
                             items-end
                             gap-1
-
-                            sm:h-8
                           "
                         >
                           {selected.trait_vector.map(
-                            (val, idx) => (
+                            (
+                              val,
+                              idx
+                            ) => (
                               <div
-                                key={idx}
+                                key={
+                                  idx
+                                }
                                 className="
                                   flex-1
                                   rounded-t-xs
-                                  bg-white/10
-                                  transition-all
-                                  duration-500
                                 "
                                 style={{
                                   height: `${Math.max(
                                     15,
                                     Math.min(
                                       100,
-                                      val * 100
+                                      val *
+                                        100
                                     )
                                   )}%`,
                                   backgroundColor:
-                                    idx % 2 === 0
+                                    idx %
+                                      2 ===
+                                    0
                                       ? accent
                                       : `${accent}88`,
                                 }}
@@ -768,7 +1803,7 @@ export function CharacterIndexSection() {
         </aside>
 
         {/* =================================================
-            RIGHT / REGISTRY
+            DESKTOP REGISTRY
         ================================================= */}
 
         <section
@@ -781,127 +1816,101 @@ export function CharacterIndexSection() {
           "
         >
 
-          {/* =================================================
-              FILTER + SEARCH
-          ================================================= */}
+          {/* FILTER BAR */}
 
           <div
             className="
-              mb-4
+              relative
+              mb-5
+              flex
               shrink-0
+              items-center
+              gap-4
               border-b
               border-white/10
-              pb-3
-
-              md:mb-5
-              md:pb-4
+              pb-4
             "
           >
-
-            {/* FILTERS */}
-
             <div
               className="
                 flex
-                w-full
                 min-w-0
-                items-center
+                flex-1
+                gap-2
+                overflow-x-auto
+                [scrollbar-width:none]
+                [&::-webkit-scrollbar]:hidden
               "
             >
-              <div
-                className="
-                  flex
-                  min-w-0
-                  max-w-full
-                  flex-1
-                  gap-2
-                  overflow-x-auto
-                  pb-1
-                  [scrollbar-width:none]
-                  [&::-webkit-scrollbar]:hidden
-                "
-              >
-                {franchises.map(
-                  (franchise) => {
-                    const active =
-                      activeFranchise ===
-                      franchise;
+              {franchises.map(
+                (franchise) => {
+                  const active =
+                    activeFranchise ===
+                    franchise;
 
-                    return (
-                      <button
-                        key={franchise}
-                        onClick={() =>
-                          setActiveFranchise(
-                            franchise
-                          )
-                        }
-                        className={`
-                          relative
-                          shrink-0
-                          border
-                          px-3
-                          py-2
-                          font-mono
-                          text-[8px]
-                          font-semibold
-                          uppercase
-                          tracking-[0.15em]
-                          transition-all
-
-                          sm:px-4
-                          sm:text-[10px]
-                          sm:tracking-[0.2em]
-
-                          ${
-                            active
-                              ? 'border-[#3b82f6] bg-[#3b82f6]/10 text-[#3b82f6]'
-                              : 'border-white/10 text-white/70 hover:border-white/30 hover:text-white'
-                          }
-                        `}
-                      >
-                        {formatFranchise(
+                  return (
+                    <button
+                      key={franchise}
+                      onClick={() =>
+                        setActiveFranchise(
                           franchise
-                        )}
+                        )
+                      }
+                      className={`
+                        relative
+                        shrink-0
+                        border
+                        px-4
+                        py-2
+                        font-mono
+                        text-[10px]
+                        font-semibold
+                        uppercase
+                        tracking-[0.2em]
+                        transition-all
 
-                        {active && (
-                          <motion.span
-                            layoutId="active-filter"
-                            className="
-                              absolute
-                              bottom-[-1px]
-                              left-0
-                              h-[2px]
-                              w-full
-                              bg-[#3b82f6]
-                            "
-                          />
-                        )}
-                      </button>
-                    );
-                  }
-                )}
-              </div>
+                        ${
+                          active
+                            ? 'border-[#3b82f6] bg-[#3b82f6]/10 text-[#3b82f6]'
+                            : 'border-white/10 text-white/70 hover:border-white/30 hover:text-white'
+                        }
+                      `}
+                    >
+                      {formatFranchise(
+                        franchise
+                      )}
+
+                      {active && (
+                        <motion.span
+                          layoutId="desktop-filter"
+                          className="
+                            absolute
+                            bottom-[-1px]
+                            left-0
+                            h-[2px]
+                            w-full
+                            bg-[#3b82f6]
+                          "
+                        />
+                      )}
+                    </button>
+                  );
+                }
+              )}
             </div>
 
             {/* SEARCH */}
 
             <div
               className="
-                mt-3
                 flex
-                w-full
+                w-[240px]
                 shrink-0
                 items-center
                 border
                 border-white/10
                 bg-black/40
                 focus-within:border-[#3b82f6]
-
-                md:mt-0
-                md:absolute
-                md:right-0
-                md:top-0
-                md:w-[240px]
               "
             >
               <span
@@ -917,29 +1926,30 @@ export function CharacterIndexSection() {
               <input
                 value={search}
                 onChange={(e) =>
-                  setSearch(e.target.value)
+                  setSearch(
+                    e.target.value
+                  )
                 }
                 onKeyDown={(e) => {
-                  if (e.key === 'Escape') {
+                  if (
+                    e.key === 'Escape'
+                  ) {
                     setSearch('');
                   }
                 }}
                 placeholder="SEARCH NAME, TRAIT..."
                 className="
                   w-full
-                  min-w-0
                   bg-transparent
                   px-3
-                  py-2.5
+                  py-2
                   font-mono
-                  text-[9px]
+                  text-[10px]
                   uppercase
-                  tracking-[0.12em]
+                  tracking-[0.15em]
                   text-white
                   outline-none
                   placeholder:text-white/30
-
-                  sm:text-[10px]
                 "
               />
 
@@ -949,7 +1959,6 @@ export function CharacterIndexSection() {
                     setSearch('')
                   }
                   className="
-                    shrink-0
                     pr-3
                     font-mono
                     text-[11px]
@@ -963,9 +1972,7 @@ export function CharacterIndexSection() {
             </div>
           </div>
 
-          {/* =================================================
-              METADATA
-          ================================================= */}
+          {/* METADATA */}
 
           <div
             className="
@@ -974,61 +1981,48 @@ export function CharacterIndexSection() {
               shrink-0
               items-center
               justify-between
-              gap-4
               font-mono
-              text-[7px]
+              text-[8px]
               uppercase
-              tracking-[0.2em]
+              tracking-[0.25em]
               text-white/40
-
-              sm:text-[8px]
-              sm:tracking-[0.25em]
             "
           >
             <span>
-              Displaying //{' '}
+              Displaying //
+              {' '}
               {filteredCharacters.length}
             </span>
 
-            <span className="truncate text-right">
-              Filter //{' '}
+            <span>
+              Filter //
+              {' '}
               {formatFranchise(
                 activeFranchise
               )}
             </span>
           </div>
 
-          {/* =================================================
-              GRID CONTAINER
-          ================================================= */}
+          {/* GRID */}
 
           <div
-            ref={gridContainerRef}
             className="
               thin-scroll
               min-h-0
               flex-1
               overflow-y-auto
-              overflow-x-hidden
-              pr-1
-
-              sm:pr-2
+              pr-2
             "
           >
-            {/* =================================================
-                LOADING
-            ================================================= */}
-
             {loading ? (
               <div
                 className="
                   flex
                   h-full
-                  min-h-[200px]
                   items-center
                   justify-center
                   font-mono
-                  text-[9px]
+                  text-[10px]
                   uppercase
                   tracking-[0.3em]
                   text-white/30
@@ -1038,32 +2032,23 @@ export function CharacterIndexSection() {
               </div>
             ) : filteredCharacters.length ===
               0 ? (
-              /* =================================================
-                  EMPTY STATE
-              ================================================= */
-
               <div
                 className="
                   flex
                   h-full
-                  min-h-[200px]
                   flex-col
                   items-center
                   justify-center
                   gap-2
-                  text-center
                   font-mono
                   text-white/30
                 "
               >
                 <span
                   className="
-                    text-[10px]
+                    text-[12px]
                     uppercase
-                    tracking-[0.15em]
-
-                    sm:text-[12px]
-                    sm:tracking-[0.2em]
+                    tracking-[0.2em]
                   "
                 >
                   No Matching Records Found
@@ -1081,8 +2066,8 @@ export function CharacterIndexSection() {
                     border-white/20
                     bg-white/5
                     px-3
-                    py-1.5
-                    text-[8px]
+                    py-1
+                    text-[9px]
                     uppercase
                     tracking-[0.15em]
                     text-white
@@ -1093,19 +2078,12 @@ export function CharacterIndexSection() {
                 </button>
               </div>
             ) : (
-              /* =================================================
-                  CHARACTER GRID
-              ================================================= */
-
               <motion.div
                 layout
                 className="
                   grid
-                  grid-cols-2
-                  gap-3
-
-                  sm:grid-cols-3
-                  sm:gap-4
+                  grid-cols-3
+                  gap-4
 
                   lg:grid-cols-4
 
@@ -1120,7 +2098,8 @@ export function CharacterIndexSection() {
                         character.name;
 
                       const cardAccent =
-                        character.geometry
+                        character
+                          .geometry
                           ?.color ||
                         '#3b82f6';
 
@@ -1147,7 +2126,7 @@ export function CharacterIndexSection() {
                             scale: 0.97,
                           }}
                           onClick={() =>
-                            setSelected(
+                            selectCharacter(
                               character
                             )
                           }
@@ -1167,8 +2146,6 @@ export function CharacterIndexSection() {
                             }
                           `}
                         >
-                          {/* IMAGE */}
-
                           <div
                             className="
                               absolute
@@ -1207,12 +2184,10 @@ export function CharacterIndexSection() {
                                   h-full
                                   items-center
                                   justify-center
-                                  px-2
-                                  text-center
                                   font-mono
-                                  text-[7px]
+                                  text-[8px]
                                   uppercase
-                                  tracking-[0.15em]
+                                  tracking-[0.2em]
                                   text-white/20
                                 "
                               >
@@ -1232,33 +2207,23 @@ export function CharacterIndexSection() {
                             />
                           </div>
 
-                          {/* =================================================
-                              CARD INFORMATION
-                          ================================================= */}
-
                           <div
                             className="
                               absolute
                               inset-x-0
                               bottom-0
                               z-10
-                              p-2
-
-                              sm:p-3
+                              p-3
                             "
                           >
                             <div
                               className="
                                 mb-1
-                                truncate
                                 font-mono
-                                text-[6px]
+                                text-[7px]
                                 uppercase
-                                tracking-[0.15em]
+                                tracking-[0.2em]
                                 text-white/40
-
-                                sm:text-[7px]
-                                sm:tracking-[0.2em]
                               "
                             >
                               {formatFranchise(
@@ -1269,31 +2234,29 @@ export function CharacterIndexSection() {
 
                             <h3
                               className="
-                                line-clamp-2
                                 font-display
-                                text-sm
+                                text-lg
                                 font-black
                                 uppercase
                                 leading-tight
                                 text-white
-
-                                sm:text-lg
                               "
                             >
-                              {character.name}
+                              {
+                                character.name
+                              }
                             </h3>
 
                             <motion.div
                               className="
-                                mt-1.5
+                                mt-2
                                 h-[2px]
-
-                                sm:mt-2
                               "
                               animate={{
-                                width: isActive
-                                  ? '100%'
-                                  : '30%',
+                                width:
+                                  isActive
+                                    ? '100%'
+                                    : '30%',
                               }}
                               style={{
                                 backgroundColor:
@@ -1302,25 +2265,16 @@ export function CharacterIndexSection() {
                             />
                           </div>
 
-                          {/* =================================================
-                              ACTIVE INDICATOR
-                          ================================================= */}
-
                           {isActive && (
                             <motion.div
-                              layoutId="active-character"
+                              layoutId="desktop-active-character"
                               className="
                                 absolute
-                                right-2
-                                top-2
+                                right-3
+                                top-3
                                 z-20
-                                h-1.5
-                                w-1.5
-
-                                sm:right-3
-                                sm:top-3
-                                sm:h-2
-                                sm:w-2
+                                h-2
+                                w-2
                               "
                               style={{
                                 backgroundColor:
@@ -1342,9 +2296,9 @@ export function CharacterIndexSection() {
   );
 }
 
-// --------------------------------------------------
+// =====================================================
 // FORMAT FRANCHISE
-// --------------------------------------------------
+// =====================================================
 
 function formatFranchise(
   franchise: string
