@@ -8,40 +8,39 @@ import { DossierSection } from '@/components/dossier-section';
 const universes = [
   { id: '01', title: 'MARVEL', value: 'marvel', color: '#ff5545' },
   { id: '02', title: 'Kung Fu PANDA', value: 'kung_fu_panda', color: '#eab308' },
-  { id: '03', title: 'AVATAR:The last airbender', value: 'atla', color: '#6493c4' },
+  { id: '03', title: 'AVATAR: The last airbender', value: 'atla', color: '#6493c4' },
   { id: '04', title: 'DC', value: 'dc', color: '#ffffff' },
 ];
-interface UniverseSectionProps {
-  onSelectFranchise: (selectedFranchise: string) => void;
-}
 
-export function UniverseSection({
-  onSelectFranchise,
-}: UniverseSectionProps) {
+export function UniverseSection() {
   const router = useRouter();
+
   const [hoveredColor, setHoveredColor] = useState('#3b82f6');
   const [selected, setSelected] = useState<string | null>(null);
 
-  // Navigate after the flare plays, and clean the timer up if the
-  // component unmounts early (fast nav elsewhere, hot reload, etc.)
+  // Navigate after the selection flare plays.
   useEffect(() => {
     if (!selected) return;
+
     const timer = setTimeout(() => {
-      router.push(`/quiz?franchise=${selected}`);
+      router.push(`/quiz?franchise=${encodeURIComponent(selected)}`);
     }, 500);
+
     return () => clearTimeout(timer);
   }, [selected, router]);
 
   const handleSelect = (value: string) => {
     if (selected) return;
-  
+
     setSelected(value);
-    onSelectFranchise(value);
   };
 
   return (
-    <DossierSection index={1} label="02 / SELECTION" fileId="AX-GATE" >
-
+    <DossierSection
+      index={1}
+      label="02 / SELECTION"
+      fileId="AX-GATE"
+    >
       {/* Dynamic Ambient Light Layer */}
       <motion.div
         animate={{ backgroundColor: `${hoveredColor}12` }}
@@ -76,7 +75,7 @@ export function UniverseSection({
           </h2>
         </div>
 
-        {/* Grid of Universes - brutalist bordered blocks */}
+        {/* Grid of Universes */}
         <div className="grid h-full w-full grid-cols-2 gap-4 md:grid-cols-4">
           {universes.map((u) => {
             const isSelected = selected === u.value;
@@ -92,8 +91,12 @@ export function UniverseSection({
                 onClick={() => handleSelect(u.value)}
                 onMouseEnter={() => setHoveredColor(u.color)}
                 onFocus={() => setHoveredColor(u.color)}
-                whileHover={selected ? undefined : { x: -4, y: -4 }}
-                whileTap={selected ? undefined : { x: 0, y: 0 }}
+                whileHover={
+                  selected ? undefined : { x: -4, y: -4 }
+                }
+                whileTap={
+                  selected ? undefined : { x: 0, y: 0 }
+                }
                 animate={
                   isSelected
                     ? {
@@ -104,20 +107,32 @@ export function UniverseSection({
                           `0 0 0 0 ${u.color}00`,
                         ],
                       }
-                    : { opacity: isDimmed ? 0.25 : 1 }
+                    : {
+                        opacity: isDimmed ? 0.25 : 1,
+                      }
                 }
                 transition={
                   isSelected
-                    ? { duration: 0.5, ease: 'easeOut' }
-                    : { duration: 0.4, ease: 'easeOut' }
+                    ? {
+                        duration: 0.5,
+                        ease: 'easeOut',
+                      }
+                    : {
+                        duration: 0.4,
+                        ease: 'easeOut',
+                      }
                 }
-                style={{ boxShadow: `8px 8px 0 0 ${u.color}` }}
+                style={{
+                  boxShadow: `8px 8px 0 0 ${u.color}`,
+                }}
                 className="
                   group relative flex flex-col justify-between
                   border-[4px] border-white bg-black
                   p-6 text-left md:p-8
-                  focus-visible:outline focus-visible:outline-2
-                  focus-visible:outline-offset-4 focus-visible:outline-white
+                  focus-visible:outline
+                  focus-visible:outline-2
+                  focus-visible:outline-offset-4
+                  focus-visible:outline-white
                   disabled:cursor-default
                 "
               >
@@ -130,7 +145,10 @@ export function UniverseSection({
                 </h3>
 
                 {/* Selection Bar */}
-                <div className="h-2 w-full" style={{ backgroundColor: u.color }} />
+                <div
+                  className="h-2 w-full"
+                  style={{ backgroundColor: u.color }}
+                />
               </motion.button>
             );
           })}

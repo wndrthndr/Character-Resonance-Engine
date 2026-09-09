@@ -356,8 +356,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
 
     return (
       <div
-        className={`min-h-dvh w-full overflow-x-hidden bg-[#11110f] text-[#e9e4d7] transition-opacity duration-700 ${
-          entering ? "opacity-0" : "opacity-100"
+        className={`min-h-dvh w-full overflow-x-hidden bg-[#11110f] text-[#e9e4d7] transition-opacity duration-700
         }`}
       >
         <style>{`
@@ -414,8 +413,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
           }
         `}</style>
 
-        <div className="retro-page paper-noise relative min-h-dvh">
-          {/* restrained retro-futurist atmosphere */}
+<div className="retro-page paper-noise relative min-h-dvh bg-[#11110f]">          {/* restrained retro-futurist atmosphere */}
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.11]"
             style={{
@@ -929,7 +927,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
   // =========================
   if (!question) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#080808] p-6 text-white">
+      <div className="flex min-h-screen items-center justify-center bg-[#080808] p-6 text-white z-100">
         <div
           className="
             border border-white/20
