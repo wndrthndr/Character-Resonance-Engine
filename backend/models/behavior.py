@@ -1,0 +1,28 @@
+from enum import Enum
+
+
+class Behavior(str, Enum):
+
+    ACTION = "ACTION"
+
+    ANALYTICAL = "ANALYTICAL"
+
+    EMPATHETIC = "EMPATHETIC"
+
+    JUSTICE_DRIVEN = "JUSTICE_DRIVEN"
+
+    AMBITIOUS = "AMBITIOUS"
+
+    CREATIVE = "CREATIVE"
+
+    LOYAL = "LOYAL"
+
+    DISCIPLINED = "DISCIPLINED"
+
+    HUMOROUS = "HUMOROUS"
+
+    CURIOUS = "CURIOUS"
+
+    PRAGMATIC = "PRAGMATIC"
+
+    REBELLIOUS = "REBELLIOUS"

@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&family=Press+Start+2P&family=Montserrat&family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font Utility Classes */
+.retro-page {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.retro-display {
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* Controlled Echo Animation */
+.echo-font-cycle {
+  animation:
+    echo-font-change 6s infinite,
+    atmosphere-glitch-main 6s infinite;
+}
+
+@keyframes echo-font-change {
+  /* Rapid glitch phase (0% to 20%) */
+  0% {
+    font-family: 'Press Start 2P', cursive;
+  }
+  4% {
+    font-family: 'Orbitron', sans-serif;
+  }
+  8% {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  12% {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  16% {
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* Settle & lock into target font (20% to 100%) */
+  20%, 100% {
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+}
+/* Loki-style title container */
+.loki-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Individual character animation wrapper */
+.loki-letter {
+  display: inline-block;
+  line-height: 1;
+  font-size-adjust: 0.5;
+  animation: loki-font-swap 9s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+/* Stagger timings per letter so each swaps asynchronously */
+.loki-letter:nth-child(1) { animation-delay: 0.0s; }
+.loki-letter:nth-child(2) { animation-delay: 0.25s; }
+.loki-letter:nth-child(3) { animation-delay: 0.10s; }
+.loki-letter:nth-child(4) { animation-delay: 0.35s; }
+
+@keyframes loki-font-swap {
+  /* Controlled pacing (swaps every ~0.6–0.8s) */
+  0% {
+    font-family: 'Press Start 2P', cursive;
+  }
+  8% {
+    font-family: 'Orbitron', sans-serif;
+  }
+  16% {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  25% {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  34% {
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* Settle and hold static on Barlow Condensed (45% to 100%) */
+  45%, 100% {
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+}
+
+/* Color wave passing animation */
+@keyframes rgb-wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-rgb-wave {
+  background-size: 300% 300%;
+  animation: rgb-wave 6s ease infinite;
+}
+/* Glitch Letter Animation */
+.glitch-letter {
+  display: inline-block !important;
+  animation: glitchFont 6s infinite ease-in-out;
+}
+
+.glitch-letter:nth-child(1) { animation-delay: 0s; }
+.glitch-letter:nth-child(2) { animation-delay: 0.4s; }
+.glitch-letter:nth-child(3) { animation-delay: 0.8s; }
+.glitch-letter:nth-child(4) { animation-delay: 1.2s; }
+
+@keyframes glitchFont {
+  0%, 15% {
+    font-family: 'Montserrat', sans-serif;
+    transform: translate(0, 0);
+    opacity: 1;
+    color: white;
+  }
+  20% {
+    font-family: 'Orbitron', sans-serif;
+    transform: translate(-1px, 1px);
+    color: #ff0055;
+  }
+  25% {
+    font-family: 'Bebas Neue', sans-serif;
+    transform: translate(1px, -1px);
+    color: #00ffff;
+  }
+  30% {
+    color: #ffffff;
+  }
+  35% {
+    font-family: 'Press Start 2P', cursive;
+    transform: translate(-2px, 2px) skewX(5deg);
+  }
+  40% {
+    font-family: 'Orbitron', sans-serif;
+    transform: translate(2px, -2px) skewX(-5deg);
+  }
+  55% {
+    font-family: 'Montserrat', sans-serif;
+    transform: translate(0, 0);
+    color: white;
+  }
+  60%, 100% {
+    font-family: 'Montserrat', sans-serif;
+    transform: translate(0, 0);
+    opacity: 1;
+    color: white;
+  }
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.25rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body {
+    @apply bg-paper text-ink;
+    overflow-x: hidden;
+  }
+  body {
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: #D6342C;
+    color: #E8E2D4;
+  }
+}
+
+@layer utilities {
+  .tracking-mega { letter-spacing: 0.18em; }
+  .tracking-wide-dossier { letter-spacing: 0.32em; }
+  .text-balance { text-wrap: balance; }
+  .shadow-brutal { box-shadow: 6px 6px 0 0 #0A0A0A; }
+  .shadow-brutal-sm { box-shadow: 3px 3px 0 0 #0A0A0A; }
+  .shadow-brutal-signal { box-shadow: 5px 5px 0 0 #D6342C; }
+  .redacted {
+    background: #0A0A0A;
+    color: transparent;
+    user-select: none;
+    border-radius: 1px;
+    position: relative;
+    display: inline-block;
+    vertical-align: baseline;
+  }
+  .reveal-clip {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1s cubic-bezier(0.7, 0, 0.2, 1);
+  }
+  .reveal-clip.is-in {
+    clip-path: inset(0 0 0 0);
+  }
+  .archive-shell { overscroll-behavior: none; }
+  .thin-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+  .thin-scroll::-webkit-scrollbar-thumb {
+    background: rgba(10, 10, 10, 0.3);
+    border-radius: 0;
+  }
+  .thin-scroll::-webkit-scrollbar-track { background: transparent; }
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
