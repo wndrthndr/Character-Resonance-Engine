@@ -57,7 +57,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quiz/answer`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/quiz/answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -240,23 +240,6 @@ export function QuizComponent({ franchise }: { franchise: string }) {
 
   const contrast = getContrast(primary);
 
-  // API image URLs may be absolute, root-relative, or relative paths.
-  // Resolve relative paths against the API origin so the browser doesn't
-  // accidentally request them from the Next.js frontend.
-  const resolveImageUrl = (image?: string | null) => {
-    if (!image) return null;
-if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsWith("blob:")) {
-  return image;
-    }
-
-    const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
-    if (image.startsWith("/")) {
-      return apiBase ? `${apiBase}${image}` : image;
-    }
-
-    return apiBase ? `${apiBase}/${image}` : image;
-  };
-
   if (result) {
     const matches = result?.matches || [];
     const topMatch = matches?.[0];
@@ -276,8 +259,6 @@ if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsW
       primaryMatch?.character?.geometry?.color ||
       result?.predicted_character?.color ||
       "#3b82f6";
-
-    const primaryImage = resolveImageUrl(primaryMatch?.image);
 
     const traitLabels: Record<string, string> = {
       ACTION: "Action Oriented",
@@ -358,9 +339,10 @@ if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsW
 
     return (
       <div
-            className="relative flex w-full max-w-[1000px] flex-col px-5 sm:px-8 lg:px-12"
-
->
+        className={`min-h-dvh w-full overflow-x-hidden bg-[#11110f] text-[#e9e4d7] transition-opacity duration-700 ${
+          entering ? "opacity-0" : "opacity-100"
+        }`}
+      >
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -428,8 +410,7 @@ if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsW
           />
           <div className="scan-lines pointer-events-none absolute inset-0 opacity-60" />
 
-          <div className="relative mx-auto flex min-h-dvh w-full max-w-[1000px] flex-col px-5 sm:px-8 lg:px-12" style={{ zoom: 1 }}
->
+          <div className="relative mx-auto flex min-h-dvh w-full max-w-[1600px] flex-col px-5 sm:px-8 lg:px-12">
             {/* TOP IDENTITY STRIP */}
             <header className="flex h-[68px] shrink-0 items-center justify-between border-b border-[#e9e4d7]/10">
               <Link
@@ -635,7 +616,7 @@ if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsW
   {/* =========================
       CHARACTER IMAGE
   ========================= */}
-  {primaryImage && (
+  {primaryMatch?.image && (
     <div
       className={`relative mx-auto flex h-full min-h-0 w-full max-w-[390px] items-center justify-center transition-all delay-100 duration-1000 ${
         scanned
@@ -672,11 +653,8 @@ if (/^(https?:)?\/\//i.test(image) || image.startsWith("data:") || image.startsW
         />
 
         <img
-          src={primaryImage}
+          src={primaryMatch.image}
           alt={primaryMatch.name}
-          onError={(event) => {
-            event.currentTarget.style.display = "none";
-          }}
           className="relative z-10 max-h-full max-w-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,.4)]"
         />
 
