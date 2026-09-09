@@ -410,7 +410,8 @@ export function QuizComponent({ franchise }: { franchise: string }) {
           />
           <div className="scan-lines pointer-events-none absolute inset-0 opacity-60" />
 
-          <div className="relative mx-auto flex min-h-dvh w-full max-w-[1200px] flex-col px-5 sm:px-8 lg:px-12">
+          <div className="relative mx-auto flex min-h-dvh w-full max-w-[1000px] flex-col px-5 sm:px-8 lg:px-12" style={{ zoom: 0.8 }}
+>
             {/* TOP IDENTITY STRIP */}
             <header className="flex h-[68px] shrink-0 items-center justify-between border-b border-[#e9e4d7]/10">
               <Link
