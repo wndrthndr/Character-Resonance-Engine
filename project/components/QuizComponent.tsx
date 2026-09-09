@@ -240,6 +240,23 @@ export function QuizComponent({ franchise }: { franchise: string }) {
 
   const contrast = getContrast(primary);
 
+  // API image URLs may be absolute, root-relative, or relative paths.
+  // Resolve relative paths against the API origin so the browser doesn't
+  // accidentally request them from the Next.js frontend.
+  const resolveImageUrl = (image?: string | null) => {
+    if (!image) return null;
+    if (/^(https?:)?\\/\\//i.test(image) || image.startsWith("data:") || image.startsWith("blob:")) {
+      return image;
+    }
+
+    const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\\/$/, "");
+    if (image.startsWith("/")) {
+      return apiBase ? `${apiBase}${image}` : image;
+    }
+
+    return apiBase ? `${apiBase}/${image}` : image;
+  };
+
   if (result) {
     const matches = result?.matches || [];
     const topMatch = matches?.[0];
@@ -259,6 +276,8 @@ export function QuizComponent({ franchise }: { franchise: string }) {
       primaryMatch?.character?.geometry?.color ||
       result?.predicted_character?.color ||
       "#3b82f6";
+
+    const primaryImage = resolveImageUrl(primaryMatch?.image);
 
     const traitLabels: Record<string, string> = {
       ACTION: "Action Oriented",
@@ -410,7 +429,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
           />
           <div className="scan-lines pointer-events-none absolute inset-0 opacity-60" />
 
-          <div className="relative mx-auto flex min-h-dvh w-full max-w-[1000px] flex-col px-5 sm:px-8 lg:px-12" style={{ zoom: 0.8 }}
+          <div className="relative mx-auto flex min-h-dvh w-full max-w-[1000px] flex-col px-5 sm:px-8 lg:px-12" style={{ zoom: 1 }}
 >
             {/* TOP IDENTITY STRIP */}
             <header className="flex h-[68px] shrink-0 items-center justify-between border-b border-[#e9e4d7]/10">
@@ -617,7 +636,7 @@ export function QuizComponent({ franchise }: { franchise: string }) {
   {/* =========================
       CHARACTER IMAGE
   ========================= */}
-  {primaryMatch?.image && (
+  {primaryImage && (
     <div
       className={`relative mx-auto flex h-full min-h-0 w-full max-w-[390px] items-center justify-center transition-all delay-100 duration-1000 ${
         scanned
@@ -654,8 +673,11 @@ export function QuizComponent({ franchise }: { franchise: string }) {
         />
 
         <img
-          src={primaryMatch.image}
+          src={primaryImage}
           alt={primaryMatch.name}
+          onError={(event) => {
+            event.currentTarget.style.display = "none";
+          }}
           className="relative z-10 max-h-full max-w-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,.4)]"
         />
 
